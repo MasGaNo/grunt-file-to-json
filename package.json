@@ -1,0 +1,38 @@
+{
+  "name": "grunt-file-to-json",
+  "version": "0.0.1",
+  "description": "Take the content of all files and put them on a json file with filename as key.",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && grunt",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "grunt": "1.0.1",
+    "pretty-data": "0.40.0"
+  },
+  "devDependencies": {
+    "@types/grunt": "0.4.21",
+    "typescript": "2.4.2"
+  },
+  "peerDependencies": {
+    "grunt": "0.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MasGaNo/grunt-file-to-json.git"
+  },
+  "keywords": [
+    "grunt",
+    "file",
+    "content",
+    "json"
+  ],
+  "author": "Norbert TRAN PHAT",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MasGaNo/grunt-file-to-json/issues"
+  },
+  "homepage": "https://github.com/MasGaNo/grunt-file-to-json#readme"
+}

@@ -1,0 +1,10 @@
+{
+    "test": "Try a JSON file",
+    "environment": "In a subfolder",
+    "name": "And keep the subfolder as a key",
+    "options": "Only if the option plainObject is false",
+    "number": 42,
+    "object": {
+        "subobject": true
+    }
+}

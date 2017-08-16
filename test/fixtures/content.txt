@@ -1,0 +1,3 @@
+Some text content.
+
+Just to test some plain text file.
