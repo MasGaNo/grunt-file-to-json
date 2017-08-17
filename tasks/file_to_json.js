@@ -34,7 +34,12 @@ function formatContent(content, ext, options, grunt, target) {
     if (ext in extForPlugins) {
         content = extForPlugins[ext].reduce(function (content, pluginName) {
             grunt.log.verbose.writeln("Apply plugin " + pluginName + " for " + target + ".");
-            return pluginCache[pluginName](content, options.plugins[pluginName].options);
+            try {
+                return pluginCache[pluginName](content, options.plugins[pluginName].options);
+            }
+            catch (e) {
+                grunt.fail.fatal("Error applying plugin " + pluginName + " for " + target + ":\n" + e);
+            }
         }, content);
     }
     return content;

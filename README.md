@@ -1,4 +1,4 @@
-# grunt-file-to-json - v0.2.0
+# grunt-file-to-json - v0.2.1
 Take the content of all files and put them on a json file with filename as key.
 
 ## Why I wrote this plugin?
