@@ -9,7 +9,18 @@ module.exports = function (grunt) {
                     prettify: true,
                     plainObject: true,
                     separator: '_',
-                    parseJSON: false
+                    parseJSON: false,
+                    plugins: {
+                        htmlminifier: {
+                            ext: ['html', 'ejs'],
+                            options: {
+                                collapseWhitespace: true,
+                                minifyCSS: true,
+                                minifyJS: true,
+                                removeComments: true
+                            }
+                        }
+                    }
                 },
                 files: [
                     {

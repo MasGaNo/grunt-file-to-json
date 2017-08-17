@@ -1,4 +1,9 @@
 "use strict";
+var pluginMaps = {
+    htmlminifier: 'htmlminifier'
+};
+var pluginCache = {};
+var extForPlugins = {};
 function formatKey(filepath, options) {
     if (options.removeExt) {
         filepath = filepath.substr(0, filepath.lastIndexOf('.'));
@@ -21,12 +26,37 @@ function insertToObject(previous, filepath, content) {
     currentHandle[paths.shift()] = content;
     return previous;
 }
-function formatContent(content, ext, options) {
+function formatContent(content, ext, options, grunt, target) {
     switch (ext) {
         case 'json':
             return options.parseJSON ? JSON.parse(content) : content;
     }
+    if (ext in extForPlugins) {
+        content = extForPlugins[ext].reduce(function (content, pluginName) {
+            grunt.log.verbose.writeln("Apply plugin " + pluginName + " for " + target + ".");
+            return pluginCache[pluginName](content, options.plugins[pluginName].options);
+        }, content);
+    }
     return content;
+}
+function checkPlugin(options, grunt) {
+    if (!('plugins' in options)) {
+        return;
+    }
+    Object.keys(options.plugins).map(function (plugin) {
+        if (!(plugin in pluginMaps)) {
+            return grunt.log.error("Plugin " + plugin + " was not found.");
+        }
+        var pluginConf = options.plugins[plugin];
+        pluginCache[plugin] = require("./plugins/" + pluginMaps[plugin]);
+        pluginConf.ext.map(function (ext) {
+            if (!(ext in extForPlugins)) {
+                extForPlugins[ext] = [];
+            }
+            extForPlugins[ext].push(plugin);
+        });
+        grunt.log.verbose.writeln("Added plugin " + plugin + " for " + pluginConf.ext.join(', ') + " file(s).");
+    });
 }
 module.exports = function (grunt) {
     grunt.registerMultiTask('file_to_json', 'Embed files content to a JSON file', function () {
@@ -37,6 +67,7 @@ module.exports = function (grunt) {
             parseJSON: false,
             separator: '/'
         });
+        checkPlugin(options, grunt);
         this.files.forEach(function (file) {
             var prefix = '';
             if ('cwd' in file) {
@@ -61,10 +92,10 @@ module.exports = function (grunt) {
             }).filter(Boolean);
             var srcFiles = srcFilesList.reduce(function (previous, current) {
                 if (options.plainObject) {
-                    previous[current.filepath] = formatContent(grunt.file.read(current.target), current.ext, options);
+                    previous[current.filepath] = formatContent(grunt.file.read(current.target), current.ext, options, grunt, current.target);
                 }
                 else {
-                    insertToObject(previous, current.filepath, formatContent(grunt.file.read(current.target), current.ext, options));
+                    insertToObject(previous, current.filepath, formatContent(grunt.file.read(current.target), current.ext, options, grunt, current.target));
                 }
                 return previous;
             }, {});

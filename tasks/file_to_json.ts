@@ -1,11 +1,17 @@
 import * as Grunt from 'grunt';
 
+type TPlugin = {
+    ext: string[];
+    options: {[key: string]: string};
+}
+
 type TOptions = {
     removeExt: boolean;
     plainObject: boolean;
     prettify: boolean;
     parseJSON: boolean;
     separator: string;
+    plugins?: {[name:string]: TPlugin}
 };
 
 type TJsonResult = {
@@ -17,6 +23,14 @@ type TProcessFile = {
     filepath: string;
     ext: string;
 };
+
+const pluginMaps: {[name:string]: string} = {
+    htmlminifier: 'htmlminifier'
+};
+
+const pluginCache: {[pluginName: string]: Function} = {};
+
+const extForPlugins: {[ext:string]: string[]} = {};
 
 function formatKey(filepath: string, options: TOptions): string {
     if (options.removeExt) {
@@ -46,13 +60,44 @@ function insertToObject(previous: TJsonResult, filepath: string, content: string
     return previous;
 }
 
-function formatContent(content: string, ext: string, options: TOptions): string {
+function formatContent(content: string, ext: string, options: TOptions, grunt: IGrunt, target: string): string {
     switch (ext) {
         case 'json':
             return options.parseJSON ? JSON.parse(content) : content;
     }
 
+    if (ext in extForPlugins) {
+        content = extForPlugins[ext].reduce((content: string, pluginName: string) => {
+            grunt.log.verbose.writeln(`Apply plugin ${pluginName} for ${target}.`);
+            return pluginCache[pluginName](content, options.plugins![pluginName].options);
+        }, content);
+    }
+
     return content;
+}
+
+function checkPlugin(options: TOptions, grunt: IGrunt) {
+    if (!('plugins' in options)) {
+        return;
+    }
+
+    Object.keys(options.plugins!).map((plugin: string) => {
+        if (!(plugin in pluginMaps)) {
+            return grunt.log.error(`Plugin ${plugin} was not found.`);
+        }
+
+        const pluginConf: TPlugin = options.plugins![plugin];
+        pluginCache[plugin] = require(`./plugins/${pluginMaps[plugin]}`);
+
+        pluginConf.ext.map((ext) => {
+            if (!(ext in extForPlugins)) {
+                extForPlugins[ext] = [];
+            }
+            extForPlugins[ext].push(plugin);
+        });
+
+        grunt.log.verbose.writeln(`Added plugin ${plugin} for ${pluginConf.ext.join(', ')} file(s).`);
+    })
 }
 
 export = function (grunt: IGrunt) {
@@ -66,6 +111,8 @@ export = function (grunt: IGrunt) {
             parseJSON: false,
             separator: '/'            
         } as TOptions);
+
+        checkPlugin(options, grunt);
 
         this.files.forEach((file) => {
             let prefix = '';
@@ -93,9 +140,9 @@ export = function (grunt: IGrunt) {
             const srcFiles = srcFilesList.reduce((previous: TJsonResult, current: TProcessFile) => {
 
                     if (options.plainObject) {
-                        previous[current.filepath] = formatContent(grunt.file.read(current.target), current.ext, options);
+                        previous[current.filepath] = formatContent(grunt.file.read(current.target), current.ext, options, grunt, current.target);
                     } else {
-                        insertToObject(previous, current.filepath, formatContent(grunt.file.read(current.target), current.ext, options));
+                        insertToObject(previous, current.filepath, formatContent(grunt.file.read(current.target), current.ext, options, grunt, current.target));
                     }
 
                     return previous;

@@ -1,4 +1,4 @@
-# grunt-file-to-json
+# grunt-file-to-json - v0.2.0
 Take the content of all files and put them on a json file with filename as key.
 
 ## Why I wrote this plugin?
@@ -35,6 +35,8 @@ grunt.initConfig({
         // plainObject: boolean | default: true
         // separator: string | default: /
         // parseJSON: boolean | default: false
+        // plugins: object | default: null
+        } -->
     },
     your_target: {
       /** contents like this:
@@ -88,5 +90,30 @@ Default value: `false`
 
 Convert JSON file to JSON object. If `false`, the application will get the JSON content as a text plain.
 
+#### options.plugins
+Type: `Object`
+Default value: `null`
+
+Add some built-in plugins to allow some pre-processing on content file.
+To add a plugin, just fill this object with the plugin name and its configuration:
+```js
+{
+  plugins: {
+    pluginName: {
+      ext: ['html'],
+      options: {
+        // Options of the plugin
+      }
+    }
+  }
+}
+```
+
+### Plugins
+List of built-in plugins:
+- htmlminifier: based on the [Kangax html-minifier](https://github.com/kangax/html-minifier.git). You can use its [options](https://github.com/kangax/html-minifier#options-quick-reference) to configure this plugin.
+
+
 ## Release History
-1. First release.
+- 0.2.0 Add plugin system
+- 0.1.0 First release.
