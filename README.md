@@ -29,22 +29,22 @@ In your project's Gruntfile, add a section named `file_to_json` to the data obje
 ```js
 grunt.initConfig({
   file_to_json: {
-    options: {
-        // removeExt: boolean | default: false
-        // prettify: boolean | default: false
-        // plainObject: boolean | default: true
-        // separator: string | default: /
-        // parseJSON: boolean | default: false
-    },
     your_target: {
+      options: {
+          // removeExt: boolean | default: false
+          // prettify: boolean | default: false
+          // plainObject: boolean | default: true
+          // separator: string | default: /
+          // parseJSON: boolean | default: false
+      },
       /** contents like this:
-        files: [
-            {
-                cwd: 
-                src: ['*'],
-                dest: 'saveThe/result.json'
-            }
-        ]
+      files: [
+          {
+              cwd: 
+              src: ['*'],
+              dest: 'saveThe/result.json'
+          }
+      ]
       */
     },
   },
