@@ -11,6 +11,7 @@ type TOptions = {
     prettify: boolean;
     parseJSON: boolean;
     separator: string;
+    root: string;
     plugins?: {[name:string]: TPlugin}
 };
 
@@ -41,7 +42,7 @@ function formatKey(filepath: string, options: TOptions): string {
         filepath = filepath.replace(/\//g, options.separator);
     }
 
-    return filepath;
+    return options.root + filepath;
 }
 
 function insertToObject(previous: TJsonResult, filepath: string, content: string) {
@@ -114,7 +115,8 @@ export = function (grunt: IGrunt) {
             plainObject: true,
             prettify: false,
             parseJSON: false,
-            separator: '/'            
+            separator: '/',
+            root: '/'
         } as TOptions);
 
         checkPlugin(options, grunt);

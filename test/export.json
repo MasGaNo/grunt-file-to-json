@@ -1,6 +1,6 @@
 {
-  "content.txt": "Some text content.\r\n\r\nJust to test some plain text file.\r\n",
-  "index.html": "<!DOCTYPE html><html><head><title>Test html file</title></head><body><h1>Test html file</h1></body></html>",
-  "subfolder_subsubfolder_jsoncontent.json": "{\r\n    \"test\": \"Try a JSON file\",\r\n    \"environment\": \"In a subfolder\",\r\n    \"name\": \"And keep the subfolder as a key\",\r\n    \"options\": \"Only if the option plainObject is false\",\r\n    \"number\": 42,\r\n    \"object\": {\r\n        \"subobject\": true\r\n    }\r\n}\r\n",
-  "template.ejs": "<div><h1>Some template test</h1><div><%= passing.some.variable %></div> <%= if (passing.existing) { %> <div>Variable</div> <%  } %> </div>"
+  "/content.txt": "Some text content.\r\n\r\nJust to test some plain text file.\r\n",
+  "/index.html": "<!DOCTYPE html><html><head><title>Test html file</title></head><body><h1>Test html file</h1></body></html>",
+  "/subfolder_subsubfolder_jsoncontent.json": "{\r\n    \"test\": \"Try a JSON file\",\r\n    \"environment\": \"In a subfolder\",\r\n    \"name\": \"And keep the subfolder as a key\",\r\n    \"options\": \"Only if the option plainObject is false\",\r\n    \"number\": 42,\r\n    \"object\": {\r\n        \"subobject\": true\r\n    }\r\n}\r\n",
+  "/template.ejs": "<div><h1>Some template test</h1><div><%= passing.some.variable %></div> <%= if (passing.existing) { %> <div>Variable</div> <%  } %> </div>"
 }

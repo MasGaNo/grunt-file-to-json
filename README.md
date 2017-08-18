@@ -1,4 +1,4 @@
-# grunt-file-to-json - v0.2.1
+# grunt-file-to-json - v0.2.2
 Take the content of all files and put them on a json file with filename as key.
 
 ## Why I wrote this plugin?
@@ -31,12 +31,13 @@ grunt.initConfig({
   file_to_json: {
     your_target: {
       options: {
-          // removeExt: boolean | default: false
-          // prettify: boolean | default: false
-          // plainObject: boolean | default: true
-          // separator: string | default: /
           // parseJSON: boolean | default: false
+          // plainObject: boolean | default: true
           // plugins: object | default: null
+          // prettify: boolean | default: false
+          // removeExt: boolean | default: false
+          // root: string | default: /
+          // separator: string | default: /
       },
       /** contents like this:
       files: [
@@ -54,17 +55,11 @@ grunt.initConfig({
 
 ### Options
 
-#### options.removeExt
+#### options.parseJSON
 Type: `Boolean`
 Default value: `false`
 
-Remove the extension from the name of the key.
-
-#### options.prettify
-Type: `Boolean`
-Default value: `false`
-
-Determine if the JSON output should be prettify or not.
+Convert JSON file to JSON object. If `false`, the application will get the JSON content as a text plain.
 
 #### options.plainObject
 Type: `Boolean`
@@ -72,22 +67,6 @@ Default value: `true`
 
 If `true`, put all files in the root of the JSON and the name of the key include the subfolder.
 If `false`, the object hierarchy follow the folder hierarchy.
-
-#### options.separator
-Type: `String`
-Default value: `/`
-
-Separator for subfolder.
-
-*Note:*
-
-*This option works only if `options.plainObject` is set to `true`*.
-
-#### options.parseJSON
-Type: `Boolean`
-Default value: `false`
-
-Convert JSON file to JSON object. If `false`, the application will get the JSON content as a text plain.
 
 #### options.plugins
 Type: `Object`
@@ -107,6 +86,40 @@ To add a plugin, just fill this object with the plugin name and its configuratio
   }
 }
 ```
+
+See [Plugins section](#plugins) for the list of available plugins.
+
+#### options.prettify
+Type: `Boolean`
+Default value: `false`
+
+Determine if the JSON output should be prettify or not.
+
+#### options.removeExt
+Type: `Boolean`
+Default value: `false`
+
+Remove the extension from the name of the key.
+
+#### options.removeExt
+Type: `String`
+Default value: `/`
+
+Add prefix root on key name.
+
+*Note:*
+
+*This option   works only if [options.plainObject](#optionsplainobject) is set to `true`*.
+
+#### options.separator
+Type: `String`
+Default value: `/`
+
+Separator for subfolder.
+
+*Note:*
+
+*This option works only if [options.plainObject](#optionsplainobject) is set to `true`*.
 
 ### Plugins
 List of built-in plugins:

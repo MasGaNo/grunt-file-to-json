@@ -1,6 +1,6 @@
 {
   "name": "grunt-file-to-json",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Take the content of all files and put them on a json file with filename as key.",
   "main": "index.js",
   "scripts": {

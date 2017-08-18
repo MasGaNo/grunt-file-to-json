@@ -11,7 +11,7 @@ function formatKey(filepath, options) {
     if (options.plainObject) {
         filepath = filepath.replace(/\//g, options.separator);
     }
-    return filepath;
+    return options.root + filepath;
 }
 function insertToObject(previous, filepath, content) {
     var paths = filepath.split('/');
@@ -70,7 +70,8 @@ module.exports = function (grunt) {
             plainObject: true,
             prettify: false,
             parseJSON: false,
-            separator: '/'
+            separator: '/',
+            root: '/'
         });
         checkPlugin(options, grunt);
         this.files.forEach(function (file) {
